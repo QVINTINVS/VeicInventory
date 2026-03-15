@@ -173,4 +173,4 @@ RUN set -eux \
     ln -s ${WRFEM_RAM_12TO24} ${WRFEM_OUTPUT_12TO24}
 
 # Comando padrão para rodar o serviço
-CMD ["python3", "main.py"]
+CMD ["python3", "/processor/src/worker.py"]
