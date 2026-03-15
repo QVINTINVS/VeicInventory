@@ -139,9 +139,6 @@ COPY services/processor/resources/outputs.tar.gz /processor/resources/
 # Extrai arquivos Fortran e outros recursos para dentro de /processor/fortran
 RUN tar -xzf /processor/resources/outputs.tar.gz -C /processor/resources/
 
-# Cria diretório para o SQLite
-RUN mkdir -p /app/instance && chown -R 1000:1000 /app/instance
-
 # Define diretório de trabalho final
 WORKDIR /processor/src
 
@@ -157,9 +154,6 @@ ARG PROCESSOR_RESOURCES_DIR=/processor/resources \
 # Diretórios de emissões
 ENV GHG_EMIS_DIR=${PROCESSOR_RESOURCES_DIR} \
     WRF_EMIS_DIR=/opt/WRF/run
-
-# Banco SQLite interno
-ENV SQLITE_DB_PATH=/app/instance/wrfem_blobs.db
 
 # ==============================
 # 🚀 Estrutura em RAM + Symlinks
