@@ -11,4 +11,4 @@ if __name__ == "__main__":
     print("RQ worker iniciado")
 
     worker = Worker(("emission_queue",), connection=conn)
-    worker.work()
+    worker.work(with_scheduler=True)
