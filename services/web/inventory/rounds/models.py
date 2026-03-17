@@ -22,8 +22,7 @@ class WRFRoundManager(models.Manager):
 
         queue = django_rq.get_queue("emission_queue")
 
-        queue.enqueue("app.tasks.process_emission", emission_data)
-
+        queue.enqueue("tasks.process_emission", emission_data)
 
 class RoundsPanel(models.Model):
     pass
@@ -52,7 +51,7 @@ class WRFRound(models.Model):
 
         emission_data = serializers.serialize("json", (self,))[1:-1]
         queue = django_rq.get_queue("emission_queue")
-        queue.enqueue("app.tasks.process_emission", emission_data)
+        queue.enqueue("tasks.process_emission", emission_data)
 
     def run_if_pending(self):
         if self.status == RoundStatus.PENDING:

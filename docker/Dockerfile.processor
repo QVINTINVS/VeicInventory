@@ -139,9 +139,6 @@ COPY services/processor/resources/outputs.tar.gz /processor/resources/
 # Extrai arquivos Fortran e outros recursos para dentro de /processor/fortran
 RUN tar -xzf /processor/resources/outputs.tar.gz -C /processor/resources/
 
-# Cria diretório para o SQLite
-RUN mkdir -p /app/instance && chown -R 1000:1000 /app/instance
-
 # Define diretório de trabalho final
 WORKDIR /processor/src
 
@@ -150,16 +147,13 @@ WORKDIR /processor/src
 # ==============================
 
 # Arquivos WRFEM gerados a partir do outputs.tar.gz
-ARG PROCESSOR_RESOURCES_DIR=/processor/resources \
-    WRFEM_OUTPUT_00TO12=${PROCESSOR_RESOURCES_DIR}/wrfem_00to12z_d01 \
-    WRFEM_OUTPUT_12TO24=${PROCESSOR_RESOURCES_DIR}/wrfem_12to24z_d01
+ARG PROCESSOR_RESOURCES_DIR=/processor/resources
 
 # Diretórios de emissões
 ENV GHG_EMIS_DIR=${PROCESSOR_RESOURCES_DIR} \
-    WRF_EMIS_DIR=/opt/WRF/run
-
-# Banco SQLite interno
-ENV SQLITE_DB_PATH=/app/instance/wrfem_blobs.db
+    WRF_EMIS_DIR=/opt/WRF/run \
+    WRFEM_OUTPUT_00TO12=${PROCESSOR_RESOURCES_DIR}/wrfem_00to12z_d01 \
+    WRFEM_OUTPUT_12TO24=${PROCESSOR_RESOURCES_DIR}/wrfem_12to24z_d01
 
 # ==============================
 # 🚀 Estrutura em RAM + Symlinks
@@ -179,4 +173,4 @@ RUN set -eux \
     ln -s ${WRFEM_RAM_12TO24} ${WRFEM_OUTPUT_12TO24}
 
 # Comando padrão para rodar o serviço
-CMD ["python3", "main.py"]
+CMD ["python3", "/processor/src/worker.py"]

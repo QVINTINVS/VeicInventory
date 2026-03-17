@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+rq = "==2.7.0"
 redis = "==6.2.0"
-sqlalchemy = "*"
 python-dotenv = "*"
 zstandard = "*"
 boto3 = "*"
