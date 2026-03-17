@@ -138,15 +138,18 @@ REDIS_URL = os.getenv("REDIS_URL")
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": REDIS_URL,
-        "OPTIONS": {"MAX_ENTRIES": 5000, "DEFAULT_TIMEOUT": 360},
-    },
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.getenv("REDIS_PASSWORD"),
+        },
+    }
 }
 
 # Queue
 
-RQ_QUEUES = {"default": {"USE_REDIS_CACHE": "default"}}
+RQ_QUEUES = {"emission_queue": {"USE_REDIS_CACHE": "default"}}
 
 # Storage
 
