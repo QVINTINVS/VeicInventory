@@ -147,13 +147,13 @@ WORKDIR /processor/src
 # ==============================
 
 # Arquivos WRFEM gerados a partir do outputs.tar.gz
-ARG PROCESSOR_RESOURCES_DIR=/processor/resources \
-    WRFEM_OUTPUT_00TO12=${PROCESSOR_RESOURCES_DIR}/wrfem_00to12z_d01 \
-    WRFEM_OUTPUT_12TO24=${PROCESSOR_RESOURCES_DIR}/wrfem_12to24z_d01
+ARG PROCESSOR_RESOURCES_DIR=/processor/resources
 
 # Diretórios de emissões
 ENV GHG_EMIS_DIR=${PROCESSOR_RESOURCES_DIR} \
-    WRF_EMIS_DIR=/opt/WRF/run
+    WRF_EMIS_DIR=/opt/WRF/run \
+    WRFEM_OUTPUT_00TO12=${PROCESSOR_RESOURCES_DIR}/wrfem_00to12z_d01 \
+    WRFEM_OUTPUT_12TO24=${PROCESSOR_RESOURCES_DIR}/wrfem_12to24z_d01
 
 # ==============================
 # 🚀 Estrutura em RAM + Symlinks
