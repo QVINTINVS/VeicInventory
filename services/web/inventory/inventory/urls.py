@@ -17,7 +17,28 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import RedirectView
+
+from wrf_standard.views import (
+    WRFStandardEmissionListView,
+    WRFStandardEmissionCreateView,
+    WRFStandardEmissionUpdateView,
+    WRFStandardEmissionDeleteView,
+    WRFStandardVisualizeView,
+    get_netcdf_data,
+)
+
+
 
 urlpatterns = [
+    path("", RedirectView.as_view(pattern_name="wrf-standard", permanent=False)),
+
     path("admin/", admin.site.urls),
+    path("wrf-standard/", WRFStandardEmissionListView.as_view(), name="wrf-standard"),
+    path("wrf-standard/add/", WRFStandardEmissionCreateView.as_view(), name="wrf-standard_add"),
+    path("wrf-standard/<int:pk>/edit/", WRFStandardEmissionUpdateView.as_view(), name="wrf-standard_edit"),
+    path("wrf-standard/<int:pk>/delete/", WRFStandardEmissionDeleteView.as_view(), name="wrf-standard_delete"),
+    
+    path("wrf-standard/visualize/", WRFStandardVisualizeView.as_view(), name="wrf-standard_visualize"),
+    path("get_netcdf_data/", get_netcdf_data, name="get_netcdf_data"),
 ]

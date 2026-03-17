@@ -1,0 +1,42 @@
+<form method="post" action="{{ form_action }}" novalidate>
+    {% csrf_token %}
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6 d-flex flex-column">
+          <div class="mb-3">
+            <strong>{{ form.note.label_tag }}</strong>
+            {{ form.note }}
+            {{ form.note.errors }}
+          </div>
+          <div class="mb-3">
+            <strong>{{ form.fuel.label_tag }}</strong>
+            {{ form.fuel }}
+            {{ form.fuel.errors }}
+          </div>
+          <div class="mb-3">
+            <strong>{{ form.subcategory.label_tag }}</strong>
+            {{ form.subcategory }}
+            {{ form.subcategory.errors }}
+          </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column">
+          <div class="mb-3">
+            <strong>{{ form.mileage.label_tag }}</strong>
+            {{ form.mileage }}
+            {{ form.mileage.errors }}
+          </div>
+          <div class="mb-3">
+            <strong>{{ form.fraction.label_tag }}</strong>
+            {{ form.fraction }}
+            {{ form.fraction.errors }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      <button type="submit" class="btn btn-primary">
+      {% if form.instance.pk %}Atualizar{% else %}Salvar{% endif %}
+    </button>
+    </div>
+</form>

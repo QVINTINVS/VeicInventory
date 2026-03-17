@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block form %}
+{# choose wording based on whether we have an instance #}
+{% if form.instance.pk %}
+<h2 class="mb-4">Editar emissão WRF</h2>
+{% else %}
+<h2 class="mb-4">Adicionar emissão WRF</h2>
+{% endif %}
+<form method="post" action="{{ form_action }}" novalidate>
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6 d-flex flex-column">
+        <div class="mb-3">
+          <strong>{{ form.note.label_tag }}</strong>
+          {{ form.note }}
+          {{ form.note.errors }}
+        </div>
+        <div class="mb-3">
+          <strong>{{ form.fuel.label_tag }}</strong>
+          {{ form.fuel }}
+          {{ form.fuel.errors }}
+        </div>
+        <div class="mb-3">
+          <strong>{{ form.subcategory.label_tag }}</strong>
+          {{ form.subcategory }}
+          {{ form.subcategory.errors }}
+        </div>
+      </div>
+      <div class="col-md-6 d-flex flex-column">
+        <div class="mb-3">
+          <strong>{{ form.mileage.label_tag }}</strong>
+          {{ form.mileage }}
+          {{ form.mileage.errors }}
+        </div>
+        <div class="mb-3">
+          <strong>{{ form.fraction.label_tag }}</strong>
+          {{ form.fraction }}
+          {{ form.fraction.errors }}
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">
+      {% if form.instance.pk %}Atualizar{% else %}Salvar{% endif %}
+    </button>
+    <a href="{% url 'wrf_standard' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

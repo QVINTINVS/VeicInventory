@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block data_table %}
+<table id="data-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Combustível</th>
+            <th>Categoria</th>
+            <th>Nota</th>
+            <th>Autonomia</th>
+            <th>Fração</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in object_list %}
+        <tr>
+            <td>{{ obj.id }}</td>   
+            <td>{{ obj.get_fuel_display }}</td>
+            <td>{{ obj.get_subcategory_display }}</td>
+            <td>{{ obj.note }}</td>
+            <td>{{ obj.mileage }}</td>
+            <td>{{ obj.fraction }}</td>
+            <td>
+                <span class="d-inline-block badge bg-danger badge-transition" data-status="not-processed"></span>
+            </td>
+            <td>
+                <a href="#" data-edit-url="{% url 'wrf-standard_edit' obj.pk %}"
+                   class="btn btn-info btn-sm me-1 edit-button">Editar</a>
+                <form method="post" action="{% url 'wrf-standard_delete' obj.pk %}" class="d-inline delete-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No emissions yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
