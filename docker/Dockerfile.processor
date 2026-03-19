@@ -111,7 +111,7 @@ RUN --mount=type=cache,target=/opt/cache/wrf-build \
 # ==============================
 # 🚀 Stage 4 — Runtime
 # ==============================
-FROM python:3.11.11-slim-bookworm as runtime
+FROM python:3.11.15-slim-bookworm as runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
