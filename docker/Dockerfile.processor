@@ -63,11 +63,13 @@ RUN for x in mpicc mpicxx mpiCC; do \
 # 📦 Compila e instala Jasper (com cache persistente BuildKit)
 WORKDIR /opt/libs
 RUN --mount=type=cache,target=/opt/cache \
+    NPROC=${NPROC:-$(nproc)} && \
+    MAXPROC=6 && \
     wget https://github.com/mdadams/jasper/archive/refs/tags/version-2.0.33.tar.gz -O jasper.tar.gz && \
     tar -xf jasper.tar.gz && \
     cd jasper-* && \
     cmake -G "Unix Makefiles" -Bbuild -DCMAKE_INSTALL_PREFIX=/usr/local . && \
-    cmake --build build --target install && \
+    cmake --build build --target install -j "$NPROC" && \
     ldconfig && \
     cd / && rm -rf /opt/libs
 
