@@ -82,7 +82,7 @@ ENV JASPERLIB=/usr/local/lib \
 FROM deps AS build
 
 RUN apt-get update && apt-get install -y \
-    python3-minimal \
+    python3-minimal rsync \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt
@@ -98,14 +98,22 @@ ENV NETCDF_CLASSIC=1 \
     NETCDF_FORTRAN=/usr
 
 # ⚙️ Configura e compila
-RUN --mount=type=cache,target=/opt/cache/wrf-build \
+RUN --mount=type=cache,target=/root/.ccache \
+    --mount=type=cache,target=/opt/cache/wrf-build \
     --mount=type=tmpfs,target=/tmp/wrf-tmp \
+    NPROC=${NPROC:-$(nproc)} && \
+    MAXPROC=6 && \
+    if [ "$NPROC" -gt "$MAXPROC" ]; then NPROC=$MAXPROC; fi && \
+    echo "🚀 Compilando com $NPROC CPUs" && \
+    \
     printf '35\n1\n' | ./configure -r8 && \
-    echo "🚀 Compilando WRF..." && \
-    TMPDIR=/tmp/wrf-tmp ./compile em_real 2>&1 | tee /opt/WRF/compile.log && \
-    echo "🧩 Verificando resultados da compilação..." && \
-    ls -lh main || true && \
-    echo "💾 Sincronizando build cache..." && \
+    \
+    sh -c 'if [ -d /opt/cache/wrf-build/main ]; then \
+           echo "♻️ Restaurando build parcial..."; \
+           rsync -a /opt/cache/wrf-build/main/ main/ || true; \
+         fi' && \
+    \
+    TMPDIR=/tmp/wrf-tmp ./compile em_real -j "$NPROC" 2>&1 | tee /opt/WRF/compile.log && \
     rsync -a main/ /opt/cache/wrf-build/main/ || true
 
 # ==============================
