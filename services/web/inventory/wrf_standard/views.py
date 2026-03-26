@@ -49,7 +49,7 @@ class _WRFStandardEmissionFormMixin:
     model = WRFStandardEmission
     form_class = WRFStandardEmissionForm
     template_name = "wrf_standard_form.html"
-    success_url = reverse_lazy("wrf_standard")
+    success_url = reverse_lazy("wrf-standard")
 
     def get_template_names(self):
         if self.request.GET.get("modal"):
@@ -82,7 +82,7 @@ class WRFStandardEmissionUpdateView(_WRFStandardEmissionFormMixin, UpdateView):
 
 class WRFStandardEmissionDeleteView(DeleteView):
     model = WRFStandardEmission
-    success_url = reverse_lazy("wrf_standard")
+    success_url = reverse_lazy("wrf-standard")
 
     def get(self, request, *args, **kwargs):
         # avoid rendering the built-in confirmation page; the UI uses a
@@ -121,7 +121,8 @@ def get_netcdf_data(request):
     altitude = int(request.GET.get("altitude", 0))
 
     # Path to the test.nc file
-    nc_file_path = os.path.join(settings.BASE_DIR.parent, 'test', 'test.nc')
+    # nc_file_path = os.path.join(settings.BASE_DIR.parent, 'test', 'test.nc')
+    nc_file_path = "/app/services/web/test/test.nc"
 
     dataset = xr.open_dataset(nc_file_path, engine="netcdf4")
 

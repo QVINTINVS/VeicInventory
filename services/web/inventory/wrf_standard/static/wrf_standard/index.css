@@ -1,0 +1,83 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.table-actions button {
+  margin-right: 5px;
+}
+
+/* Ensures consistent background color in all form inputs */
+input:-webkit-autofill {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+.badge-transition {
+  transition:
+    background-color 0.5s ease-in-out,
+    color 0.5s ease-in-out;
+}
+
+.badge-transition[data-status='not-processed']::after {
+  content: 'Não processado';
+}
+
+.badge-transition[data-status='pending']::after {
+  content: 'Processando';
+}
+
+.badge-transition[data-status='processed']::after {
+  content: 'Processado';
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+  border: none;
+}
+
+tr.fade-out td {
+  border: none;
+  margin: 0;
+}
+
+#visualizeModal .modal-dialog {
+    max-width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#visualizeModal .modal-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+#visualizeModal .modal-body {
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#visualizeModal iframe {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    border: none;
+}

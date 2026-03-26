@@ -1,0 +1,33 @@
+span {
+    display: inline-block;
+    width: 6ch;
+    text-align: right;
+}
+
+.container {
+    display: flex;
+    vertical-align: middle;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.range-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label, input[type="range"], span {
+    vertical-align: middle;
+}
+
+label {
+    position: relative;
+    bottom: 2px;
+}
+
+span {
+    position: relative;
+    bottom: 1px;
+}
