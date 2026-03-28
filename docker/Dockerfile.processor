@@ -1,7 +1,7 @@
 # ==============================
 # 🏗️ Stage 1 — Base mínima de compilação
 # ==============================
-FROM ubuntu:22.04 AS base
+FROM debian:bookworm AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
