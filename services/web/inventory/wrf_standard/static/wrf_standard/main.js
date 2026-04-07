@@ -10,13 +10,25 @@ const process_button = document.querySelector('.process-button')
 
 if (process_button) {
   process_button.addEventListener('click', (e) => {
-      const row = document.querySelector('#data-table tr')
+      const row = document.querySelector('#data-table tbody tr');
+
+      if (!row) {
+        console.warn('No data row found in #data-table');
+        return;
+      }
 
       const notProcessedBadge = row.querySelector(
         ".badge-transition[data-status='not-processed']"
       );
 
+      if (!notProcessedBadge) {
+        console.warn('No not-processed badge found in selected row');
+        return;
+      }
+
       toggleStatusToPendingOf(notProcessedBadge);
+
+      console.log("Process button clicked, status set to pending");
     });
 }
 
@@ -61,11 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const addButton = document.getElementById("add-data");
   const modalBody = document.getElementById("addModalBody");
+  const modalTitle = document.getElementById('addModalLabel');
 
-  if (!addButton || !modalBody) return;
+  if (!addButton || !modalBody || !modalTitle) return;
 
   addButton.addEventListener("click", () => {
     console.log("Fetching form...");
+
+    modalTitle.textContent = 'Adicionar emissão WRF';
 
     // Reset loading state every time
     modalBody.innerHTML = "<div class='text-center text-muted'>Carregando…</div>";
@@ -87,4 +102,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
+  // Edit button handler
+  document.querySelectorAll('.edit-button').forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const editUrl = button.getAttribute('data-edit-url');
+      const modal = new bootstrap.Modal(document.getElementById('addModal'));
+
+      modalTitle.textContent = 'Editar emissão WRF';
+
+      modalBody.innerHTML = "<div class='text-center text-muted'>Carregando…</div>";
+
+      fetch(editUrl + '?modal=true')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          return response.text();
+        })
+        .then(html => {
+          modalBody.innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Error loading modal:", error);
+          modalBody.innerHTML =
+            "<div class='text-danger text-center'>Erro ao carregar formulário</div>";
+        });
+
+      modal.show();
+    });
+  });
 });

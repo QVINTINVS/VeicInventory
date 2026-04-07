@@ -20,7 +20,7 @@
             <td>{{ obj.id }}</td>   
             <td>{{ obj.get_fuel_display }}</td>
             <td>{{ obj.get_subcategory_display }}</td>
-            <td>{{ obj.note }}</td>
+            <td>{% if obj.note %}{{ obj.note }}{% else %}Nenhuma{% endif %}</td>
             <td>{{ obj.mileage }}</td>
             <td>{{ obj.fraction }}</td>
             <td>
