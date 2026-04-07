@@ -96,9 +96,7 @@ class WRFStandardEmissionView:
         variable_names = dataset.variables.keys()
 
         # Filter the ones containing XTIME, XLAT, and XLONG
-        target_vars = [
-            var for var in variable_names if len(dataset.variables[var].dims) == 4
-        ]
+        target_vars = [var for var in variable_names if len(dataset.variables[var].dims) >= 3]
         variable = dataset.variables[data_variable]
 
         description = getattr(variable, "description", "N/A")

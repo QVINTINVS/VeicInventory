@@ -102,8 +102,11 @@ import numpy as np
 import xarray as xr
 import os
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
-
+# decorator to allow xframe iframe
+@method_decorator(xframe_options_sameorigin, name='dispatch') 
 class WRFStandardVisualizeView(TemplateView):
     """Lightweight page used inside the visualization modal.
 
@@ -140,7 +143,7 @@ def get_netcdf_data(request):
 
     # Get all variable names
     variable_names = dataset.variables.keys()
-    target_vars = [var for var in variable_names if len(dataset.variables[var].dims) == 4]
+    target_vars = [var for var in variable_names if len(dataset.variables[var].dims) == 3]
 
     variable = dataset.variables[data_variable]
     # description = getattr(variable, "description", "N/A")

@@ -18,15 +18,17 @@ let alts_length
 
 async function fetchAndPlotHeatmap() {
     try {
-        // Fetch the data from the Flask backend
-
+        
         if (intervalId) {
             clearInterval(intervalId)
         }
         intervalId = null
-
+        
+        console.log("fetching from backend")
         const response = await fetch(`/get_netcdf_data${selectedVar ? `?data_variable=${selectedVar}` : ''}&altitude=${altitude}`);
         const data = await response.json();
+        console.log("You should have seen data")
+        console.log(`data: ${data}`)
 
         // Extract data from the JSON response
         const lats = data.lats
@@ -102,6 +104,8 @@ async function fetchAndPlotHeatmap() {
             currentFrame = (currentFrame + 1) % frames.length; // Loop through frames
             console.log(`currentFrame: ${currentFrame}`)
             frameLabel.textContent = `Frame: ${currentFrame}`
+            console.log("You should have seen data")
+            console.log(`data: ${data}`)
 
         }, delay)
     } catch (error) {

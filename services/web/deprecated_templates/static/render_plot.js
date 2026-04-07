@@ -36,7 +36,7 @@ async function fetchAndPlotHeatmap() {
         // const time = data.time
         alts_length = data.alts_length
         frames = data.frames
-        targetVars = data.target_vars
+        targetVars = data.target_vars || []
         lastFrame = frames.length
 
         // Initialize the heatmap with the first frame
@@ -105,16 +105,18 @@ async function fetchAndPlotHeatmap() {
     const dropdownMenu = document.getElementById("dropdownMenu")
 
     dropdownMenu.innerHTML = ""
-    targetVars.forEach(key => {
-        const item = document.createElement("li")
-        item.innerHTML = `<a class="dropdown-item" href="#">${key.trim()}</a>`
+    if (targetVars && Array.isArray(targetVars)) {
+        targetVars.forEach(key => {
+            const item = document.createElement("li")
+            item.innerHTML = `<a class="dropdown-item" href="#">${key.trim()}</a>`
 
-        item.querySelector("a").addEventListener("click", () => {
-            updateSelectedVar(key.trim())
+            item.querySelector("a").addEventListener("click", () => {
+                updateSelectedVar(key.trim())
+            })
+
+            dropdownMenu.appendChild(item)
         })
-
-        dropdownMenu.appendChild(item)
-    })
+    }
 }
 
 // let iframe = document.getElementById("body")
