@@ -151,7 +151,10 @@ CACHES = {
 
 # Queue
 
-RQ_QUEUES = {"default": {"USE_REDIS_CACHE": "default"}}
+RQ_QUEUES = {
+    "default": {"URL": REDIS_URL},
+    "emission_queue": {"URL": REDIS_URL},
+}
 
 # Storage
 

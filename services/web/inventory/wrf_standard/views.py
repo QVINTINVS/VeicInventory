@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+import django_rq
+
 from .models import WRFStandardEmission
 
 
@@ -98,6 +100,7 @@ class WRFStandardEmissionDeleteView(DeleteView):
 
 from django.http import JsonResponse
 from django.views.generic import TemplateView
+
 import numpy as np
 import xarray as xr
 import os
@@ -181,3 +184,14 @@ def get_netcdf_data(request):
         "zmax": zmax,
         "alts_length": 0,
     })
+
+def process_emission(request):
+    if request.method == 'POST':
+        print("Processar button clicked - backend interaction test")
+
+        queue = django_rq.get_queue("emission_queue")
+        payload = request.body.decode("utf-8") if request.body else "{}"
+        queue.enqueue("tasks.process_emission", payload)
+
+        return JsonResponse({'status': 'success', 'message': 'Processing started'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'})

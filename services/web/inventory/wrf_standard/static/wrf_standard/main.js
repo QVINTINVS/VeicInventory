@@ -29,6 +29,23 @@ if (process_button) {
       toggleStatusToPendingOf(notProcessedBadge);
 
       console.log("Process button clicked, status set to pending");
+
+      // Send AJAX request to backend
+      fetch('/process_emission/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({})
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Backend response:', data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     });
 }
 

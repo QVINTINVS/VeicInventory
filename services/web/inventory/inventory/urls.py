@@ -26,6 +26,7 @@ from wrf_standard.views import (
     WRFStandardEmissionDeleteView,
     WRFStandardVisualizeView,
     get_netcdf_data,
+    process_emission,
 )
 
 
@@ -41,4 +42,5 @@ urlpatterns = [
     
     path("wrf-standard/visualize/", WRFStandardVisualizeView.as_view(), name="wrf-standard_visualize"),
     path("get_netcdf_data/", get_netcdf_data, name="get_netcdf_data"),
+    path("process_emission/", process_emission, name="process_emission"),
 ]

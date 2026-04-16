@@ -2,6 +2,7 @@ import hashlib
 import io
 import json
 import os
+import subprocess
 
 import boto3
 import zstandard as zstd
@@ -37,26 +38,15 @@ def compress_file(path: str):
 
 
 def run_and_capture():
-    r_fd, w_fd = os.pipe()
-
-    actions = (
-        (os.POSIX_SPAWN_DUP2, w_fd, 1),
-        (os.POSIX_SPAWN_DUP2, w_fd, 2),
-        (os.POSIX_SPAWN_CLOSE, r_fd),
-        (os.POSIX_SPAWN_CLOSE, w_fd),
+    completed = subprocess.run(
+        ["/bin/bash", run_script_path],
+        env=env,
+        capture_output=True,
+        text=True,
     )
 
-    pid = os.posix_spawn(run_script_path, ("/bin/bash",), env, file_actions=actions)
-
-    os.close(w_fd)
-
-    output = b"".join(iter(lambda: os.read(r_fd, 4096), b""))
-
-    os.close(r_fd)
-
-    _, status = os.waitpid(pid, 0)
-
-    return status, output.decode()
+    output = completed.stdout + completed.stderr
+    return completed.returncode, output
 
 
 def insert_round_wrfem_output(queue_item: dict):
